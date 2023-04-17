@@ -10,7 +10,7 @@ MATRIX_DIR = ./meschach_lib
 CFLAGS := -std=c++11 -Wall -I$(MATRIX_DIR)
 
 # Linker flags
-LDFLAGS = -lm -lapprox -foffload-lto -L$(LIBAPPROX_LOCATION)
+LDFLAGS = -lm -foffload-lto -L$(LIBAPPROX_LOCATION) -lapprox
 
 
 # Debug Flags
