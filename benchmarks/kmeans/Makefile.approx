@@ -1,0 +1,60 @@
+#===============================================================================
+# User Options
+#===============================================================================
+
+# Compiler can be set below, or via environment variable
+CC        = clang++
+OPTIMIZE  = yes
+DEBUG     = no
+DEVICE    = gpu
+APPROX_TYPE?=APPROX_OUT
+
+
+
+# Standard flags
+CFLAGS := -std=c++14 -Wall
+
+# Linker flags
+LDFLAGS = -lm -foffload-lto -L${LIBAPPROX_LOCATION} -lapprox
+
+# Debug Flags
+ifeq ($(DEBUG),yes)
+  CFLAGS += -g
+endif
+
+# Optimization Flags
+ifeq ($(OPTIMIZE),yes)
+  CFLAGS += -O3 -DAPPROX -g
+endif
+
+ifeq ($(DEVICE),gpu)
+  CFLAGS +=-fopenmp -fopenmp-targets=$(HPAC_GPU_ARCH) -Xopenmp-target -march=$(HPAC_GPU_SM) -fapprox -foffload-lto -D${APPROX_TYPE}
+else
+  CFLAGS +=-qopenmp
+endif
+
+all: kmeans
+
+kmeans: cluster.o getopt.o read_input.o rmse.o kmeans.c
+	$(CC) $(KERNEL_DIM) $(CFLAGS) $^ -o kmeans $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -c
+
+kmeans.o: kmeans.c kmeans.h
+
+cluster.o: cluster.c kmeans.h
+
+getopt.o: getopt.c getopt.h
+
+read_input.o: read_input.c kmeans.h
+
+rmse.o: rmse.c kmeans.h
+
+clean:
+	rm -f *.o *~ kmeans *.linkinfo
+
+run: kmeans
+	./kmeans -r -n 5 -m 15 -l 10 -o -i ../data/kmeans/kdd_cup
+
+
