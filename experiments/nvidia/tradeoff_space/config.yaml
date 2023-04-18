@@ -1,0 +1,222 @@
+# ALL paths should be relative to the base directory of the repository
+---
+run:
+    hpac_basedir: "/p/gpfs1/fink12/HPAC-GLXfer"
+    # Note: this is relative to 'hpac_basedir'
+    hpac_build_dir: "build_compiler"
+    temporary_base_dir: "./"
+    hpac_package_version: "16"
+    config_file: "/home/zane/projects/LLNL/hpac_performance/2023-02-14_nvidia/experiments.csv"
+    output_directory: "./"
+    database_file: "results.sqlite3"
+    device_stats_enabled: 0
+    warp_size: 32
+    # change for your platform
+    num_cpu_threads: 44
+
+benchmark:
+  binomialoptions:
+    overrides:
+      taf:
+        hierarchy: ["block"]
+    regions:
+      perfo: ["bo_perfo"]
+      iact: ["entire_memo_in"]
+      taf: ["entire_memo_out"]
+    executable_name: "binomial_options"
+    executable_arguments:
+      num_options: 524288
+      num_steps: 1024
+      seed: 123
+    approx_arguments:
+      taf:
+        input_num_items: 1
+        output_num_items: 1
+      iact:
+        input_num_items: 5
+        output_num_items: 1
+    input_data: "data/blackscholes/random_input_524288.bin"
+    benchmark_directory: "benchmarks/binomialoptions"
+    exact_results: "benchmarks/binomialoptions/exact.out"
+    output_filename: "approx.out"
+
+  # benchmark-specific trials can override
+  blackscholes:
+    overrides:
+      trials: 8
+    executable_name: "blackscholes"
+    executable_arguments:
+      num_options: 16777216
+    approx_arguments:
+      iact:
+        input_num_items: 6
+        output_num_items: 1
+      taf:
+        input_num_items: 1
+        output_num_items: 1
+    regions:
+      perfo: ['bs_perfo']
+      iact: ["entire_memo"]
+      taf: ["entire_memo_out"]
+    input_data: "data/blackscholes/random_input_16777216.bin"
+    benchmark_directory: "benchmarks/blackscholes"
+    exact_results: "benchmarks/blackscholes/exact.out"
+    output_filename: "approx.out"
+
+  leukocyte:
+    overrides:
+      items_per_thread: [1]
+      trials: [8]
+    executable_name: "leukocyte"
+    executable_arguments:
+      # 36 cells, create one block for each cell
+      num_cells: 36
+      num_frames: 20
+    approx_arguments:
+      input_num_items: 1
+      output_num_items: 1
+    regions:
+      perfo: ['IMGVF_perfo']
+      iact: ["IMGVF_comp_in"]
+      taf: ["IMGVF_comp_out"]
+    input_data: "data/leukocyte/testfile.avi"
+    benchmark_directory: "benchmarks/leukocyte"
+    exact_results: "benchmarks/leukocyte/result.txt"
+    output_filename: "result.txt"
+
+
+  kmeans:
+    overrides:
+      taf:
+        history_size: [2,3,4,5,6,7,8,16]
+        prediction_size: [2,3,4,5,6]
+    regions:
+      taf: ["entire_memo_out"]
+      perfo: ['kmeans_perfo']
+      iact: ["entire_memo_in"]
+    executable_arguments:
+      num_points: 6553600
+      num_features: 34
+      min_clusters: 10
+      max_clusters: 10
+      num_kmeans_iters: 1
+      converg_iters: 500
+    approx_arguments:
+      taf:
+        input_num_items: 1
+        output_num_items: 1
+      iact:
+        input_num_items: 34
+        output_num_items: 1
+    executable_name: "kmeans"
+    input_data: "data/kmeans/6553600_34f.txt"
+    benchmark_directory: "benchmarks/kmeans"
+    exact_results: "benchmarks/kmeans/assignments_exact.txt"
+
+  lavaMD:
+    overrides:
+      blocksize: [128]
+      items_per_thread: [1]
+    regions:
+      perfo: ['lavamd_perfo']
+      iact: ["entire_box_in"]
+      taf: ["entire_box_out"]
+    executable_name: "main"
+    executable_arguments:
+      boxes1d: 64
+    approx_arguments:
+      taf:
+        input_num_items: 1
+        output_num_items: 4
+      iact:
+        input_num_items: 1024
+        output_num_items: 4
+    input_data: ""
+    benchmark_directory: "benchmarks/lavaMD"
+    exact_results: "benchmarks/lavaMD/result.txt"
+    output_filename: "result.txt"
+
+  miniFE:
+    regions:
+      perfo: []
+      iact: ["whole_row_in"]
+      taf: ["whole_row_out"]
+    executable_name: "miniFE.x"
+    executable_arguments:
+      num_rows: 16974848
+      nx: 256
+      ny: 256
+      nz: 256
+    approx_arguments:
+      taf:
+        input_num_items: 1
+        output_num_items: 1
+      iact:
+        # TODO: Figure this one o9ut
+        input_num_items: 1
+        output_num_items: 1
+    input_data: ""
+    benchmark_directory: "benchmarks/miniFE"
+    exact_results: "benchmarks/miniFE/exact.txt"
+
+  lulesh:
+    overrides:
+      blocksize: [128]
+      taf:
+        taf_width: 1
+      iact:
+        replacement_policy: ['REPLACEMENT_ROUND_ROBIN']
+    regions:
+      iact: ["hourglasscontrol_in"]
+      perfo: ["lulesh_perfo"]
+      taf: ["hourglasscontrol_out"]
+    executable_name: "lulesh2.0"
+    executable_arguments:
+      size: 128
+      max_iterations: 300
+    approx_arguments:
+      taf:
+        input_num_items: 1
+        output_num_items: 24
+      iact:
+        input_num_items: 24
+        output_num_items: 24
+    input_data: ""
+    benchmark_directory: "benchmarks/lulesh"
+    exact_results: "benchmarks/lulesh/exact.txt"
+
+gen:
+    trials: 3
+    items_per_thread: [1]
+    blocksize: [256]
+    taf:
+      hierarchy: ["thread", "warp"]
+      items_per_thread: [8, 16, 32, 64, 128, 256, 512]
+      threshold: [0.3, 0.6, 0.9, 1.2, 1.5, 3.0, 5.0, 20]
+      history_size: [1,2,3,4,5]
+      prediction_size: [2,4,8,16,32,128,256, 512]
+      taf_width: [1]
+    iact:
+      hierarchy: ["thread", "warp"]
+      items_per_thread: [8, 16, 32, 64, 128, 256, 512]
+      table_size: [1, 2, 4, 8]
+      threshold: [0.1, 0.3, 0.5, 0.7, 0.9, 3.0, 5.0, 20]
+      tables_per_warp: [1,2,16,32]
+      replacement_policy: ['REPLACEMENT_ROUND_ROBIN']
+      blocksize: 256
+
+    perfo:
+      items_per_thread: [8, 16, 32, 64, 128, 256, 512]
+      # SMALL, LARGE, INI, FINI
+      perfo_types: ['small', 'large', 'ini', 'fini']
+      perfo_skip: [2,4,8,16,32,64]
+      perfo_percent: [10, 20, 30, 40, 50, 60, 70, 80, 90]
+      blocksize: 256
+
+    perfo:
+      items_per_thread: [8, 16, 32, 64, 128, 256, 512]
+      # SMALL, LARGE, INI, FINI
+      perfo_types: ['small', 'large', 'ini', 'fini']
+      perfo_skip: [2,4,8,16,32,64]
+      perfo_percent: [10, 20, 30, 40, 50, 60, 70, 80, 90]
+      blocksize: 256
