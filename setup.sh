@@ -14,5 +14,6 @@ else
 
   # Move the 'input_data' directory to the 'benchmarks' directory
   mv input_data benchmarks/
+  rm 7p8eb0ppw6zhtdr7krhiw9kat52lmwez.gz
 fi
 
