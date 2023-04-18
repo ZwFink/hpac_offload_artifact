@@ -38,6 +38,7 @@ def main(config_file, number):
     hpac_build_dir = tempfile.TemporaryDirectory(prefix=run_cfg['temporary_base_dir'])
     base_dir = Path(__file__).resolve().parent.parent.parent.parent
     bench_cfg = modify_paths(bench_cfg, base_dir)
+    cfg = modify_paths(cfg, base_dir)
 
     # Some approx techniques set environment for HPAC build
 
