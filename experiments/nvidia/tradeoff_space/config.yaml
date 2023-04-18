@@ -6,7 +6,7 @@ run:
     hpac_build_dir: "build_compiler"
     temporary_base_dir: "./"
     hpac_package_version: "16"
-    config_file: "/home/zane/projects/LLNL/hpac_performance/2023-02-14_nvidia/experiments.csv"
+    config_file: "/p/gpfs1/fink12/hpac_offload_artifact/experiments/nvidia/tradeoff_space/experiments_taf.csv"
     output_directory: "./"
     database_file: "results.sqlite3"
     device_stats_enabled: 0
@@ -35,7 +35,7 @@ benchmark:
       iact:
         input_num_items: 5
         output_num_items: 1
-    input_data: "data/blackscholes/random_input_524288.bin"
+    input_data: "benchmarks/input_data/blackscholes/random_input_524288.bin"
     benchmark_directory: "benchmarks/binomialoptions"
     exact_results: "benchmarks/binomialoptions/exact.out"
     output_filename: "approx.out"
@@ -58,7 +58,7 @@ benchmark:
       perfo: ['bs_perfo']
       iact: ["entire_memo"]
       taf: ["entire_memo_out"]
-    input_data: "data/blackscholes/random_input_16777216.bin"
+    input_data: "benchmarks/input_data/blackscholes/random_input_16777216.bin"
     benchmark_directory: "benchmarks/blackscholes"
     exact_results: "benchmarks/blackscholes/exact.out"
     output_filename: "approx.out"
@@ -79,7 +79,7 @@ benchmark:
       perfo: ['IMGVF_perfo']
       iact: ["IMGVF_comp_in"]
       taf: ["IMGVF_comp_out"]
-    input_data: "data/leukocyte/testfile.avi"
+    input_data: "benchmarks/input_data/leukocyte/testfile.avi"
     benchmark_directory: "benchmarks/leukocyte"
     exact_results: "benchmarks/leukocyte/result.txt"
     output_filename: "result.txt"
@@ -109,7 +109,7 @@ benchmark:
         input_num_items: 34
         output_num_items: 1
     executable_name: "kmeans"
-    input_data: "data/kmeans/6553600_34f.txt"
+    input_data: "benchmarks/input_data/kmeans/6553600_34f.txt"
     benchmark_directory: "benchmarks/kmeans"
     exact_results: "benchmarks/kmeans/assignments_exact.txt"
 
