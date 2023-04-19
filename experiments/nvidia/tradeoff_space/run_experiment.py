@@ -19,13 +19,15 @@ from hpac_harness import *
 
 
 @click.command()
+@click.option('--technique', help="Approximation technique to use", type=click.Choice(['taf', 'iact', 'perfo']))
 @click.option('--config_file', help="Name of the config YAML file", type=click.File('r'))
 @click.option('--number', help="Experiment number to run", type=int)
-def main(config_file, number):
+def main(technique, config_file, number):
     cfg = yaml.load(config_file, yaml.Loader)
     run_cfg = cfg['run']
     bench_cfg = cfg['benchmark']
-    exp_cfg = pd.read_csv(run_cfg['config_file'])
+    exp_cfg_name = f'config_{technique}'
+    exp_cfg = pd.read_csv(run_cfg[exp_cfg_name])
     exp_cfg = exp_cfg.set_index(exp_cfg['experiment_number']).loc[number]
     exp_cfg = exp_cfg.to_dict()
     exp_cfg.update(run_cfg)
