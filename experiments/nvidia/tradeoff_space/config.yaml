@@ -1,7 +1,7 @@
 # ALL paths should be relative to the base directory of the repository
 ---
 run:
-    hpac_basedir: "/p/gpfs1/fink12/HPAC-GLXfer"
+    hpac_basedir: "HPAC"
     # Note: this is relative to 'hpac_basedir'
     hpac_build_dir: "build_compiler"
     temporary_base_dir: "./"
