@@ -6,9 +6,9 @@ run:
     hpac_build_dir: "build_compiler"
     temporary_base_dir: "./"
     hpac_package_version: "16"
-    config_file: "/p/gpfs1/fink12/hpac_offload_artifact/experiments/nvidia/tradeoff_space/experiments_taf.csv"
+    config_file: "experiments/nvidia/tradeoff_space/experiments_taf.csv"
     output_directory: "./"
-    database_file: "results.sqlite3"
+    database_file: "experiments/nvidia/tradeoff_space/results.sqlite3"
     device_stats_enabled: 0
     warp_size: 32
     # change for your platform
