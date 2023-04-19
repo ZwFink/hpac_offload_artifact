@@ -6,9 +6,9 @@ run:
     hpac_build_dir: "build_compiler"
     temporary_base_dir: "./"
     hpac_package_version: "16"
-    config_taf: "experiments/nvidia/tradeoff_space/experiments_taf.csv"
-    config_iact: "experiments/nvidia/tradeoff_space/experiments_iact.csv"
-    config_perfo: "experiments/nvidia/tradeoff_space/experiments_perfo.csv"
+    config_taf: "experiments/nvidia/tradeoff_space/experiment_config/experiments_taf.csv"
+    config_iact: "experiments/nvidia/tradeoff_space/experiment_config/experiments_iact.csv"
+    config_perfo: "experiments/nvidia/tradeoff_space/experiment_config/experiments_perfo.csv"
     output_directory: "./"
     database_file: "experiments/nvidia/tradeoff_space/results.sqlite3"
     device_stats_enabled: 0
