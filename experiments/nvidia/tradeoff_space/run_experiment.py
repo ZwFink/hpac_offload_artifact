@@ -27,6 +27,10 @@ def main(technique, config_file, number):
     run_cfg = cfg['run']
     bench_cfg = cfg['benchmark']
     exp_cfg_name = f'config_{technique}'
+    base_dir = Path(__file__).resolve().parent.parent.parent.parent
+    bench_cfg = modify_paths(bench_cfg, base_dir)
+    cfg = modify_paths(cfg, base_dir)
+    run_cfg = modify_paths(run_cfg, base_dir)
     exp_cfg = pd.read_csv(run_cfg[exp_cfg_name])
     exp_cfg = exp_cfg.set_index(exp_cfg['experiment_number']).loc[number]
     exp_cfg = exp_cfg.to_dict()
@@ -38,9 +42,6 @@ def main(technique, config_file, number):
     benchmark_name = exp_cfg['benchmark']
 
     hpac_build_dir = tempfile.TemporaryDirectory(prefix=run_cfg['temporary_base_dir'])
-    base_dir = Path(__file__).resolve().parent.parent.parent.parent
-    bench_cfg = modify_paths(bench_cfg, base_dir)
-    cfg = modify_paths(cfg, base_dir)
 
     # Some approx techniques set environment for HPAC build
 
@@ -137,7 +138,6 @@ def build_hpac(destination, cfg, _others = None):
 def modify_paths(value, base_dir):
     if isinstance(value, str):
         path = Path(value)
-        print(str(base_dir/ path))
         if not path.is_absolute() and Path(base_dir, path).exists():
             modified_path = Path(base_dir, path).resolve()
             if modified_path.exists():
