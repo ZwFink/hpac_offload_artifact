@@ -1,16 +1,16 @@
 # ALL paths should be relative to the base directory of the repository
 ---
 run:
-    hpac_basedir: "HPAC"
+    hpac_basedir: "/p/gpfs1/fink12/HPAC-GLXfer"
     # Note: this is relative to 'hpac_basedir'
     hpac_build_dir: "build_compiler"
     temporary_base_dir: "./"
     hpac_package_version: "16"
-    config_taf: "experiments/nvidia/tradeoff_space/experiment_config/experiments_taf.csv"
-    config_iact: "experiments/nvidia/tradeoff_space/experiment_config/experiments_iact.csv"
-    config_perfo: "experiments/nvidia/tradeoff_space/experiment_config/experiments_perfo.csv"
+    config_taf: "experiments/nvidia/tradeoff_space/experiment_config/experiments_taf_all.csv"
+    config_iact: "experiments/nvidia/tradeoff_space/experiment_config/experiments_iact_all.csv"
+    config_perfo: "experiments/nvidia/tradeoff_space/experiment_config/experiments_perfo_all.csv"
     output_directory: "./"
-    database_file: "experiments/nvidia/tradeoff_space/results.sqlite3"
+    database_file: "experiments/nvidia/tradeoff_space/results_all.sqlite3"
     device_stats_enabled: 0
     warp_size: 32
     # change for your platform
