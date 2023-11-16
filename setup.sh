@@ -36,7 +36,8 @@ clang_bin=$prefix/bin/clang
 
 if [ ! -d "artifact_files" ]; then
   wget https://zenodo.org/record/8200217/files/hpac_offload_artifact.zip
-  unzip hpac_offload_artifact.zip -d artifact_files
+  unzip hpac_offload_artifact.zip 
+  mv hpac_offload_artifact artifact_files
   rm hpac_offload_artifact.zip
   mv artifact_files/HPAC .
   mv artifact_files/input_data .
